@@ -26,6 +26,44 @@ ALLOWED_HOSTS = ['<%= @final_allowed_hosts %>', ]
 # https://docs.djangoproject.com/en/1.4/ref/settings/#secure-proxy-ssl-header
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 
+
+<% if @database_engine %>
+##########################
+# Database Configuration #
+##########################
+# If you cluster multiple webapps you will need to setup an external database
+# (such as MySQL) and configure all of the webapp instances to use the same database.
+# Note that this database is likely used to store only sessions
+#
+# DO NOT FORGET TO RUN 'manage.py syncdb' AFTER SETTING UP A NEW DATABASE
+#
+# see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info 
+#
+DATABASES = {
+    'default': {
+        'ENGINE': '<%= @database_engine %>',
+    <% if @database_name %>
+        'NAME': '<%= @database_name %>',
+    <% end %>
+    <% if @database_user %>
+        'USER': '<%= @database_user %>',
+    <% end %>
+    <% if @database_password %>
+        'PASSWORD': '<%= @database_password %>',
+    <% end %>
+    <% if @database_host %>
+        'HOST': '<%= @database_host %>',
+    <% end %>
+    <% if @database_port %>
+        'PORT': '<%= @database_port %>',
+    <% end %>
+    <% if @database_character_set %>
+        'default-character-set': '<%= @database_character_set %>'
+    <% end %>
+    }
+}
+<% end %>
+
 # If Horizon is being served through SSL, then uncomment the following two
 # settings to better secure the cookies from security exploits
 <% if @secure_cookies %>
@@ -34,6 +72,13 @@ SESSION_COOKIE_SECURE = True
 <% else %>
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True
+<% end %>
+
+<% if @session_engine %>
+#  See https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-SESSION_ENGINE
+#  If not provided, no changes will be made and by default horizon
+#  Uses django.contrib.sessions.backends.signed_cookies 
+SESSION_ENGINE = "<%= @session_engine %>"
 <% end %>
 
 # Overrides for OpenStack API versions. Use this setting to force the

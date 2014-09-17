@@ -93,6 +93,34 @@
 #    (optional) Maximum number of Swift containers/objects to display
 #    on a single page. Defaults to 1000.
 #
+#  [*database_name*]
+#   (optional) c to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_engine*]
+#   (optional) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_user*]
+#   (optional) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_password*]
+#   (optional) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_host*]
+#   (optional) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_port*]
+#   (optional) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
+#  [*database_character_set*]
+#   (optional) (default utf8) parameter to configure some database connection info
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#databases for more info
+#
 #  [*log_level*]
 #    (optional) Log level. Defaults to 'INFO'. WARNING: Setting this to
 #    DEBUG will let plaintext passwords be logged in the Horizon log file.
@@ -147,6 +175,12 @@
 #  [*ssl_redirect*]
 #    (optional) Whether to redirect http to https
 #    Defaults to True
+#
+#  [*session_engine*]
+#    (optional) the setting to configure SESSION_ENGINE
+#    see https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-SESSION_ENGINE
+#    if not provided, no changes will be made and by default horizon
+#    uses django.contrib.sessions.backends.signed_cookies 
 #
 #  [*horizon_cert*]
 #    (required with listen_ssl) Certificate to use for SSL support.
@@ -205,6 +239,13 @@ class horizon(
   $secondary_endpoint_type = undef,
   $available_regions       = undef,
   $api_result_limit        = 1000,
+  $database_name           = undef,
+  $database_engine         = undef,
+  $database_user           = undef,
+  $database_password       = undef,
+  $database_host           = undef,
+  $database_port           = undef,
+  $database_character_set  = 'utf8',
   $log_level               = 'INFO',
   $help_url                = 'http://docs.openstack.org',
   $local_settings_template = 'horizon/local_settings.py.erb',
@@ -215,6 +256,7 @@ class horizon(
   $allowed_hosts           = $::fqdn,
   $listen_ssl              = false,
   $ssl_redirect            = true,
+  $session_engine          = undef,
   $horizon_cert            = undef,
   $horizon_key             = undef,
   $horizon_ca              = undef,
